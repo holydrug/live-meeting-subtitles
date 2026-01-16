@@ -1,3 +1,11 @@
+
+
+
+https://github.com/user-attachments/assets/f74c706b-0963-4978-afc6-3137943b2e62
+
+
+
+
 # Live Meeting Subtitles
 
 Real-time voice transcription and translation for video calls (Zoom, Google Meet, Teams, etc.)
