@@ -1,0 +1,38 @@
+# Voice Analyzer Configuration
+
+# Server settings (WSL)
+server:
+  host: "0.0.0.0"  # Listen on all interfaces
+  port: 9876
+
+# Whisper settings
+transcription:
+  model: "large-v3"
+  device: "cuda"
+  compute_type: "float16"
+  language: "en"  # source language
+
+# Translation settings
+translation:
+  provider: "google"  # deepl, google, local, none
+  target_language: "RU"
+
+  deepl:
+    api_key: ""  # Set via DEEPL_API_KEY env var
+
+  local:
+    model: "facebook/nllb-200-distilled-600M"
+
+# Client settings (Windows)
+client:
+  host: "localhost"  # WSL server address
+  port: 9876
+  device: ""  # Audio device (empty = default loopback)
+
+# Overlay UI
+overlay:
+  width: 700
+  max_lines: 6
+  font_size: 15
+  opacity: 0.9
+  position: "bottom-right"

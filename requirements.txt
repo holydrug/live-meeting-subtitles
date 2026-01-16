@@ -1,0 +1,22 @@
+# Core
+numpy>=1.24.0
+
+# Transcription
+faster-whisper>=1.0.0
+
+# Translation APIs
+deepl>=1.16.0
+googletrans==4.0.0rc1
+
+# Local translation (optional, for NLLB)
+# transformers>=4.35.0
+# sentencepiece>=0.1.99
+
+# UI
+PyQt6>=6.6.0
+
+# Config
+pyyaml>=6.0.1
+
+# Windows only (for WASAPI loopback)
+# soundcard>=0.4.2
