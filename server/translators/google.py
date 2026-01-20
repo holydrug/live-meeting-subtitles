@@ -1,14 +1,14 @@
-"""Google Translate (free, unofficial)."""
+"""Google Translate (free, using deep-translator)."""
 
 try:
-    from googletrans import Translator as GoogleTransAPI
+    from deep_translator import GoogleTranslator as DeepGoogleTranslator
 except ImportError:
-    GoogleTransAPI = None
+    DeepGoogleTranslator = None
 
 from .base import Translator, TranslationError
 
 
-# Language code mapping (our codes -> googletrans codes)
+# Language code mapping (our codes -> google codes)
 LANG_MAP = {
     "EN": "en",
     "RU": "ru",
@@ -18,7 +18,7 @@ LANG_MAP = {
     "IT": "it",
     "PT": "pt",
     "JA": "ja",
-    "ZH": "zh-cn",
+    "ZH": "zh-CN",
     "KO": "ko",
     "UK": "uk",
     "PL": "pl",
@@ -26,13 +26,11 @@ LANG_MAP = {
 
 
 class GoogleTranslator(Translator):
-    """Free Google Translate using googletrans library."""
+    """Free Google Translate using deep-translator library."""
 
     def __init__(self):
-        if GoogleTransAPI is None:
-            raise ImportError("googletrans required: pip install googletrans==4.0.0rc1")
-
-        self._client = GoogleTransAPI()
+        if DeepGoogleTranslator is None:
+            raise ImportError("deep-translator required: pip install deep-translator")
 
     @property
     def name(self) -> str:
@@ -43,11 +41,11 @@ class GoogleTranslator(Translator):
             return ""
 
         # Map language codes
-        dest = LANG_MAP.get(target_lang.upper(), target_lang.lower())
-        src = LANG_MAP.get(source_lang.upper(), source_lang.lower()) if source_lang else "auto"
+        target = LANG_MAP.get(target_lang.upper(), target_lang.lower())
+        source = LANG_MAP.get(source_lang.upper(), source_lang.lower()) if source_lang else "auto"
 
         try:
-            result = self._client.translate(text, dest=dest, src=src)
-            return result.text
+            translator = DeepGoogleTranslator(source=source, target=target)
+            return translator.translate(text)
         except Exception as e:
             raise TranslationError(f"Google Translate error: {e}") from e
