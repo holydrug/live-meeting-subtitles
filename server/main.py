@@ -26,7 +26,7 @@ from shared.protocol import (
     encode_message,
     decode_message,
 )
-from server.transcriber import Transcriber
+from server.transcribers import create_transcriber, BaseTranscriber
 from server.translators import create_translator, Translator
 
 
@@ -37,6 +37,7 @@ class TranscriptionServer:
         self,
         host: str = DEFAULT_HOST,
         port: int = DEFAULT_PORT,
+        transcriber_engine: str = "whisper",
         model: str = "large-v3",
         device: str = "cuda",
         translation_provider: str = "google",
@@ -50,13 +51,23 @@ class TranscriptionServer:
         self.port = port
         self.target_language = target_language
         self.source_language = source_language
+        self.transcriber_engine = transcriber_engine
 
-        # Initialize transcriber
-        self.transcriber = Transcriber(
-            model_name=model,
-            device=device,
-            language=source_language,
-        )
+        # Initialize transcriber using factory
+        if transcriber_engine == "parakeet":
+            self.transcriber: BaseTranscriber = create_transcriber(
+                "parakeet",
+                device=device,
+                language=source_language,
+            )
+        else:
+            self.transcriber: BaseTranscriber = create_transcriber(
+                "whisper",
+                model_name=model,
+                device=device,
+                language=source_language,
+            )
+        print(f"Transcriber: {transcriber_engine}")
 
         # Initialize translator
         self.translator: Translator | None = None
@@ -234,6 +245,9 @@ def main():
     parser = argparse.ArgumentParser(description="Voice Transcription Server")
     parser.add_argument("--host", default=DEFAULT_HOST, help="Host to bind to")
     parser.add_argument("--port", type=int, default=DEFAULT_PORT, help="Port to bind to")
+    parser.add_argument("--transcriber", default="whisper",
+                        choices=["whisper", "parakeet"],
+                        help="Transcription engine (parakeet is ~2x faster)")
     parser.add_argument("--model", default="large-v3", help="Whisper model name")
     parser.add_argument("--device", default="cuda", choices=["cuda", "cpu"])
     parser.add_argument("--translator", default="google",
@@ -246,6 +260,7 @@ def main():
     server = TranscriptionServer(
         host=args.host,
         port=args.port,
+        transcriber_engine=args.transcriber,
         model=args.model,
         device=args.device,
         translation_provider=args.translator if args.translator != "none" else None,
