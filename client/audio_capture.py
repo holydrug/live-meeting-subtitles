@@ -199,6 +199,12 @@ class AudioCapture:
                         self.on_audio(audio_bytes)
 
                     except Exception as e:
+                        error_msg = str(e)
+                        # Stop on connection-related errors
+                        if "Event loop is closed" in error_msg or "closed" in error_msg.lower():
+                            print("Connection closed, stopping capture...")
+                            self._running = False
+                            break
                         print(f"Audio capture error: {e}")
                         time.sleep(0.1)
 
