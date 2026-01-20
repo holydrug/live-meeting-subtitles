@@ -43,6 +43,11 @@ Thumbs.db
 *.mp3
 transcripts/
 
+# Tracing logs (keep directory, ignore contents)
+logs/*.jsonl
+logs/*.json
+!logs/.gitkeep
+
 # Secrets
 .env
 *.env
