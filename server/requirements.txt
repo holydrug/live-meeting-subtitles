@@ -1,13 +1,21 @@
-# Server requirements (WSL/Linux)
+# Server requirements (WSL/Linux with CUDA)
+
+# Core
 numpy>=1.24.0
-faster-whisper>=1.0.0
 websockets>=12.0
 
-# Translation
-deepl>=1.16.0
-googletrans==4.0.0rc1
+# Transcription - Whisper
+faster-whisper>=1.0.0
 
-# Local translation (optional)
+# Transcription - Parakeet (NVIDIA NeMo)
+# Note: Requires PyTorch nightly for RTX 50 series (Blackwell)
+# pip install --pre torch --index-url https://download.pytorch.org/whl/nightly/cu128
+nemo_toolkit[asr]>=2.0.0
+
+# Translation
+deep-translator>=1.11.0  # Google Translate (free)
+deepl>=1.16.0            # DeepL API (needs key)
+
+# Local translation (optional, large download)
 # transformers>=4.35.0
 # sentencepiece>=0.1.99
-# torch>=2.0.0

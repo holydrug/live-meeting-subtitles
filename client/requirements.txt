@@ -1,6 +1,6 @@
 # Client requirements (Windows)
-pyaudiowpatch>=0.2.12  # WASAPI loopback support
-numpy>=1.24.0
 websockets>=12.0
 PyQt6>=6.6.0
-scipy>=1.11.0  # for audio resampling
+pyaudio>=0.2.14
+numpy>=1.24.0
+scipy>=1.11.0
